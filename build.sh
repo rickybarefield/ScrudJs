@@ -11,10 +11,9 @@ coffee -o dist/js -c test-coffee
 cp -r vendor/* dist/js
 cp -r test-vendor/* dist/js
 
-r.js -o app.build.js
-
 cd dist
 npm install requirejs
-npm install mocha
 npm install sinon
-cd ..
+cd js
+browserify Scrud.js --outfile ../Scrud-0.1.js
+cd ../..

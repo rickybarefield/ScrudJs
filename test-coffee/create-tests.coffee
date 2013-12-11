@@ -1,7 +1,6 @@
 expect = require("./expect.js")
 sinon = require("sinon")
 Scrud = require("./Scrud.js")
-mocha = require("mocha")
 MockWebSocket = require("./MockWebSocket.js")
 assert = new expect.Assertion
 
@@ -25,7 +24,7 @@ test 'correct JSON is produced', ->
 
   jsonSent = mockWebSocket.lastMessageSent
 
-  expect(jsonSent).to.equal "blah"
+  expect(jsonSent).to.equal '{"client-id":"myClientId","type":"Item","resource":{"name":"MyItem"}}'
 
 test 'onSuccess function should be called', ->
 

@@ -4,15 +4,18 @@ module.exports = class Scrud
 
   constructor: (@websocketAddress) ->
 
+    self = this
+    @Create = ->
+      Create.apply(this, arguments)
+      this.Scrud = self
+      this
+
+    @Create.prototype = Create.prototype
+
+
   connect: ->
 
     @websocket = new WebSocket(@websocketAddress)
-
-  Create: =>
-
-    createMessage = new Create(arguments)
-    createMessage.Scrud = @
-    createMessage
 
   send: (object) ->
 
