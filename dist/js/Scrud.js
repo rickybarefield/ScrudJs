@@ -18,6 +18,8 @@
     function Scrud(websocketAddress) {
       var GenerateProxyConstructor, self;
       this.websocketAddress = websocketAddress;
+      this.send = __bind(this.send, this);
+
       this.connect = __bind(this.connect, this);
 
       self = this;

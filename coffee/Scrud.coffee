@@ -40,6 +40,6 @@ module.exports = class Scrud
     @websocket = new WebSocket(@websocketAddress)
     @websocket.onmessage = -> receiveMessage.apply(self, arguments)
 
-  send: (object) ->
+  send: (object) =>
 
     @websocket.send(JSON.stringify(object))
