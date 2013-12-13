@@ -1,10 +1,12 @@
+CreateSuccess = require("./ScrudCreateSuccess")
+
 module.exports =  class ScrudCreate
 
-  constructor: (@type, @resource, @onSuccessFunction) ->
+  constructor: (@resourceType, @resource, @onSuccessFunction) ->
 
   send: ->
 
-    message = {'client-id': @clientId, type: @type, resource: @resource}
+    message = {"client-id": @clientId, "resource-type": @resourceType, "resource": @resource}
 
     @Scrud.send(message)
 
@@ -12,6 +14,6 @@ module.exports =  class ScrudCreate
 
     switch message["message-type"]
 
-      when 'create-success' then @onSuccessFunction.apply(this, message)
+      when 'create-success' then @onSuccessFunction.call(this, new CreateSuccess(message["resource-id"], message["resource"]))
 
       else console.log("Warning a response was received but not of an understood message-type for the given client-id")
