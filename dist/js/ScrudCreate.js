@@ -18,6 +18,7 @@
     ScrudCreate.prototype.send = function() {
       var message;
       message = {
+        "message-type": "create",
         "client-id": this.clientId,
         "resource-type": this.resourceType,
         "resource": this.resource

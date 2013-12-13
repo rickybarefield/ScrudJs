@@ -24,7 +24,7 @@ test 'correct JSON is produced', ->
 
   jsonSent = mockWebSocket.lastMessageSent
 
-  expect(jsonSent).to.equal '{"client-id":"cId-1","resource-type":"Item","resource":{"name":"MyItem"}}'
+  expect(jsonSent).to.equal '{"message-type":"create","client-id":"cId-1","resource-type":"Item","resource":{"name":"MyItem"}}'
 
 test 'onSuccess function should be called', ->
 

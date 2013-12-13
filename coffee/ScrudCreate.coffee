@@ -6,7 +6,7 @@ module.exports =  class ScrudCreate
 
   send: ->
 
-    message = {"client-id": @clientId, "resource-type": @resourceType, "resource": @resource}
+    message = {"message-type": "create", "client-id": @clientId, "resource-type": @resourceType, "resource": @resource}
 
     @Scrud.send(message)
 

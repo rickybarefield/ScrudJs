@@ -9,6 +9,16 @@
       this.onSuccessFunction = onSuccessFunction;
     }
 
+    ScrudSubscribe.prototype.send = function() {
+      var message;
+      message = {
+        "client-id": this.clientId,
+        "resource-type": this.resourceType,
+        "resource": this.resource
+      };
+      return this.Scrud.send(message);
+    };
+
     return ScrudSubscribe;
 
   })();

@@ -33,7 +33,7 @@
     });
     createMessage.send();
     jsonSent = mockWebSocket.lastMessageSent;
-    return expect(jsonSent).to.equal('{"client-id":"cId-1","resource-type":"Item","resource":{"name":"MyItem"}}');
+    return expect(jsonSent).to.equal('{"message-type":"create","client-id":"cId-1","resource-type":"Item","resource":{"name":"MyItem"}}');
   });
 
   test('onSuccess function should be called', function() {
