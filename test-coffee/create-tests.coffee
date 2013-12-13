@@ -10,61 +10,61 @@ mockWebSocket = MockWebSocket.lastCreated
 
 suite 'Create', ->
 
-test 'correct JSON is produced', ->
+  test 'correct JSON is produced', ->
 
-  scrudConnection.currentClientId = 0
-  resourceType = "Item"
+    scrudConnection.currentClientId = 0
+    resourceType = "Item"
 
-  resource =
-    name: 'MyItem'
+    resource =
+      name: 'MyItem'
 
-  createMessage = new scrudConnection.Create(resourceType, resource, -> success = true)
+    createMessage = new scrudConnection.Create(resourceType, resource)
 
-  createMessage.send()
+    createMessage.send(-> success = true)
 
-  jsonSent = mockWebSocket.lastMessageSent
+    jsonSent = mockWebSocket.lastMessageSent
 
-  expect(jsonSent).to.equal '{"message-type":"create","client-id":"cId-1","resource-type":"Item","resource":{"name":"MyItem"}}'
+    expect(jsonSent).to.equal '{"message-type":"create","client-id":"cId-1","resource-type":"Item","resource":{"name":"MyItem"}}'
 
-test 'onSuccess function should be called', ->
+  test 'onSuccess function should be called', ->
 
-  type = "Item"
+    type = "Item"
 
-  resource =
-    name: 'MyItem'
+    resource =
+      name: 'MyItem'
 
-  success = false
+    success = false
 
-  createMessage = new scrudConnection.Create(type, resource, -> success = true)
-  clientId = createMessage.clientId
-  createMessage.send()
+    createMessage = new scrudConnection.Create(type, resource)
+    clientId = createMessage.clientId
+    createMessage.send(-> success = true)
 
-  mockWebSocket.receive("""{"client-id": "#{clientId}", "message-type": "create-success"}""")
+    mockWebSocket.receive("""{"client-id": "#{clientId}", "message-type": "create-success"}""")
 
-  expect(success).to.equal true
+    expect(success).to.equal true
 
-test 'A ScrudSuccess message should be passed to the onSuccess function', ->
+  test 'A ScrudSuccess message should be passed to the onSuccess function', ->
 
-  type = "Item"
+    type = "Item"
 
-  resource =
-    name: 'MyItem'
+    resource =
+      name: 'MyItem'
 
-  success = false
+    success = false
 
-  doSuccess = (createSuccessMessage) ->
+    doSuccess = (createSuccessMessage) ->
 
-    success = true
-    expect(createSuccessMessage.resource.name).to.equal "MyItem"
-    expect(createSuccessMessage.resource.id).to.equal "server-id-1"
-    expect(createSuccessMessage.resourceId).to.equal "server-id-1"
+      success = true
+      expect(createSuccessMessage.resource.name).to.equal "MyItem"
+      expect(createSuccessMessage.resource.id).to.equal "server-id-1"
+      expect(createSuccessMessage.resourceId).to.equal "server-id-1"
 
 
-  createMessage = new scrudConnection.Create(type, resource, doSuccess)
-  clientId = createMessage.clientId
-  createMessage.send()
+    createMessage = new scrudConnection.Create(type, resource)
+    clientId = createMessage.clientId
+    createMessage.send(doSuccess)
 
-  theString = """{"client-id": "#{clientId}", "message-type": "create-success", "resource-id": "server-id-1", "resource": {"name": "MyItem", "id": "server-id-1"}}"""
-  mockWebSocket.receive(theString)
+    theString = """{"client-id": "#{clientId}", "message-type": "create-success", "resource-id": "server-id-1", "resource": {"name": "MyItem", "id": "server-id-1"}}"""
+    mockWebSocket.receive(theString)
 
-  expect(success).to.equal true
+    expect(success).to.equal true

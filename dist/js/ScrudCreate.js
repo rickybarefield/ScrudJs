@@ -7,16 +7,18 @@
 
   module.exports = ScrudCreate = (function() {
 
-    function ScrudCreate(resourceType, resource, onSuccessFunction) {
+    function ScrudCreate(resourceType, resource) {
       this.resourceType = resourceType;
       this.resource = resource;
-      this.onSuccessFunction = onSuccessFunction;
-      this.handle = __bind(this.handle, this);
+      this['create-success'] = __bind(this['create-success'], this);
+
+      this.send = __bind(this.send, this);
 
     }
 
-    ScrudCreate.prototype.send = function() {
+    ScrudCreate.prototype.send = function(onSuccessFunction) {
       var message;
+      this.onSuccessFunction = onSuccessFunction;
       message = {
         "message-type": "create",
         "client-id": this.clientId,
@@ -26,13 +28,8 @@
       return this.Scrud.send(message);
     };
 
-    ScrudCreate.prototype.handle = function(message) {
-      switch (message["message-type"]) {
-        case 'create-success':
-          return this.onSuccessFunction.call(this, new CreateSuccess(message["resource-id"], message["resource"]));
-        default:
-          return console.log("Warning a response was received but not of an understood message-type for the given client-id");
-      }
+    ScrudCreate.prototype['create-success'] = function(message) {
+      return this.onSuccessFunction.call(this, new CreateSuccess(message["resource-id"], message["resource"]));
     };
 
     return ScrudCreate;

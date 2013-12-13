@@ -16,7 +16,7 @@ npm install requirejs
 npm install sinon
 cd js
 browserify Scrud.js --outfile ../Scrud-0.1.js
-mocha -u tdd create-tests.js
+mocha -u tdd create-tests subscribe-tests
 
 cd ../..
 

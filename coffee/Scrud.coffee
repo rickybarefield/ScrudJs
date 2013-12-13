@@ -1,4 +1,5 @@
 Create = require("./ScrudCreate")
+Subscribe = require("./ScrudSubscribe")
 
 module.exports = class Scrud
 
@@ -12,21 +13,26 @@ module.exports = class Scrud
     self = this
     @clientIdMap = {}
     @currentClientId = 1
-    @Create = ->
-      Create.apply(this, arguments)
-      this.Scrud = self
-      clientId = generateClientId.call(self)
-      this.clientId = clientId
-      self.clientIdMap[clientId] = this
-      this
 
-    @Create.prototype = Create.prototype
+    GenerateProxyConstructor = (Type) ->
+      func = ->
+        Type.apply(this, arguments)
+        this.Scrud = self
+        clientId = generateClientId.call(self)
+        this.clientId = clientId
+        self.clientIdMap[clientId] = this
+        this
+      func.prototype = Type.prototype
+      return func
+
+    @Create = GenerateProxyConstructor(Create)
+    @Subscribe = GenerateProxyConstructor(Subscribe)
 
   receiveMessage = (message) ->
 
     json = JSON.parse(message)
     messagesClientId = json['client-id']
-    @clientIdMap[messagesClientId].handle(json)
+    @clientIdMap[messagesClientId][json['message-type']](json)
 
   connect: =>
 
