@@ -8,12 +8,18 @@ class WebSocket
     @socket = new WebSocketClient()
 
     doOpen = (connection) ->
-      if(self.onopen?) then self.onopen.call(arguments) else console.log("onopen was not defined so could not be called")
-      self.connection = connection
 
-    @socket.on 'connect', => doOpen.apply(this, arguments)
-    @socket.on 'message', => if(@onmessage?) then @onmessage.call(arguments) else console.log("onmessage was not defined so could not be called")
-    @socket.on 'close', => if(@onclose?) then @onclose.call(arguments) else console.log("onclose was not defined so could not be called")
+      handleMessage = (message) ->
+        if(@onmessage? && message.type == 'utf8')
+          @onmessage.call(this, message.utf8Data)
+        else console.log("onmessage was not defined so could not be called")
+
+      self.connection = connection
+      if(self.onopen?) then self.onopen.call(arguments) else console.log("onopen was not defined so could not be called")
+      connection.on 'message', => handleMessage.apply(this, arguments)
+      connection.on 'close', => if(@onclose?) then @onclose.apply(this, arguments) else console.log("onclose was not defined so could not be called")
+
+    @socket.on 'connect', => doOpen.apply(self, arguments)
     @socket.connect(uri)
 
   send: (message) =>

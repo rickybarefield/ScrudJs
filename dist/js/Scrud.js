@@ -50,10 +50,11 @@
       return this.clientIdMap[messagesClientId][json['message-type']](json);
     };
 
-    Scrud.prototype.connect = function() {
+    Scrud.prototype.connect = function(onOpenCallback) {
       var self;
       self = this;
       this.websocket = new WebSocket(this.websocketAddress);
+      this.websocket.onopen = onOpenCallback;
       return this.websocket.onmessage = function() {
         return receiveMessage.apply(self, arguments);
       };

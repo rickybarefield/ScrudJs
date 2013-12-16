@@ -29,15 +29,15 @@ module.exports = class Scrud
     @Subscribe = GenerateProxyConstructor(Subscribe)
 
   receiveMessage = (message) ->
-
     json = JSON.parse(message)
     messagesClientId = json['client-id']
     @clientIdMap[messagesClientId][json['message-type']](json)
 
-  connect: =>
+  connect: (onOpenCallback) =>
 
     self = this
     @websocket = new WebSocket(@websocketAddress)
+    @websocket.onopen = onOpenCallback
     @websocket.onmessage = -> receiveMessage.apply(self, arguments)
 
   send: (object) =>

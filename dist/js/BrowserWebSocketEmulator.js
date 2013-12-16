@@ -15,29 +15,34 @@
       self = this;
       this.socket = new WebSocketClient();
       doOpen = function(connection) {
+        var handleMessage,
+          _this = this;
+        handleMessage = function(message) {
+          if ((this.onmessage != null) && message.type === 'utf8') {
+            return this.onmessage.call(this, message.utf8Data);
+          } else {
+            return console.log("onmessage was not defined so could not be called");
+          }
+        };
+        self.connection = connection;
         if ((self.onopen != null)) {
           self.onopen.call(arguments);
         } else {
           console.log("onopen was not defined so could not be called");
         }
-        return self.connection = connection;
+        connection.on('message', function() {
+          return handleMessage.apply(_this, arguments);
+        });
+        return connection.on('close', function() {
+          if ((_this.onclose != null)) {
+            return _this.onclose.apply(_this, arguments);
+          } else {
+            return console.log("onclose was not defined so could not be called");
+          }
+        });
       };
       this.socket.on('connect', function() {
-        return doOpen.apply(_this, arguments);
-      });
-      this.socket.on('message', function() {
-        if ((_this.onmessage != null)) {
-          return _this.onmessage.call(arguments);
-        } else {
-          return console.log("onmessage was not defined so could not be called");
-        }
-      });
-      this.socket.on('close', function() {
-        if ((_this.onclose != null)) {
-          return _this.onclose.call(arguments);
-        } else {
-          return console.log("onclose was not defined so could not be called");
-        }
+        return doOpen.apply(self, arguments);
       });
       this.socket.connect(uri);
     }
