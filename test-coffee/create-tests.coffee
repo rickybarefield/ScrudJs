@@ -1,6 +1,6 @@
 expect = require("./expect.js")
 sinon = require("sinon")
-Scrud = require("./Scrud.js")
+Scrud = require("Scrud")
 MockWebSocket = require("./MockWebSocket.js")
 assert = new expect.Assertion
 

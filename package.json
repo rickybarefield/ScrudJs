@@ -1,0 +1,11 @@
+{
+  "author": "Ricky Barefield",
+  "name": "Scrud",
+  "description": "Subscribing CRUD",
+  "version": "0.0.1",
+  "main": "./lib/Scrud",
+  "dependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}

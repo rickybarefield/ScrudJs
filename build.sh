@@ -1,21 +1,20 @@
 #Clean target directories
-rm -rf dist/*
+rm -rf build/*
 
-#Build main coffeescript
-coffee -o dist/js -c coffee
+#Main
+coffee -o build/dist/lib -c coffee
+cp README.md build/dist/
+cp package.json build/dist/
+cd build/dist
+npm update
 
-#Build test coffeescript
-coffee -o dist/js -c test-coffee
-
-#Copy vendor files in
-cp -r vendor/* dist/js
-cp -r test-vendor/* dist/js
-
-cd dist
-npm install requirejs
+#Test
+cd ../..
+coffee -o build/test -c test-coffee
+cp -r test-vendor/* build/test
+cd build/test
 npm install sinon
-cd js
-browserify -s Scrud Scrud.js --outfile ../Scrud-0.1.js
+npm link Scrud
 mocha -u tdd create-tests subscribe-tests
 
 cd ../..
