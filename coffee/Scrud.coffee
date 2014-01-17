@@ -29,7 +29,7 @@ module.exports = class Scrud
     @Subscribe = GenerateProxyConstructor(Subscribe)
 
   receiveMessage = (message) ->
-    json = JSON.parse(message)
+    json = JSON.parse(message.data)
     messagesClientId = json['client-id']
     @clientIdMap[messagesClientId][json['message-type']](json)
 

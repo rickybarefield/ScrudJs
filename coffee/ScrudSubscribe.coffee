@@ -3,7 +3,7 @@ Created = require("./ScrudCreated")
 
 module.exports =  class ScrudSubscribe
 
-  constructor: (@resourceType, @onSuccessFunction) ->
+  constructor: (@resourceType) ->
 
   send: (onSuccess, onCreated) =>
 

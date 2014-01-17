@@ -10,6 +10,11 @@ mockWebSocket = MockWebSocket.lastCreated
 
 suite 'Create', ->
 
+  createWsMessage = (payload) ->
+
+    message =
+      'data': payload
+
   test 'correct JSON is produced', ->
 
     scrudConnection.currentClientId = 0
@@ -39,7 +44,7 @@ suite 'Create', ->
     clientId = createMessage.clientId
     createMessage.send(-> success = true)
 
-    mockWebSocket.receive("""{"client-id": "#{clientId}", "message-type": "create-success"}""")
+    mockWebSocket.receive(createWsMessage("""{"client-id": "#{clientId}", "message-type": "create-success"}"""))
 
     expect(success).to.equal true
 
@@ -64,7 +69,7 @@ suite 'Create', ->
     clientId = createMessage.clientId
     createMessage.send(doSuccess)
 
-    theString = """{"client-id": "#{clientId}", "message-type": "create-success", "resource-id": "server-id-1", "resource": {"name": "MyItem", "id": "server-id-1"}}"""
-    mockWebSocket.receive(theString)
+
+    mockWebSocket.receive(createWsMessage("""{"client-id": "#{clientId}", "message-type": "create-success", "resource-id": "server-id-1", "resource": {"name": "MyItem", "id": "server-id-1"}}"""))
 
     expect(success).to.equal true

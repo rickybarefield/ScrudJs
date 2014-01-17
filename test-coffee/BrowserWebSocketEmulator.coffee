@@ -10,8 +10,14 @@ class WebSocket
     doOpen = (connection) ->
 
       handleMessage = (message) ->
+
+
         if(@onmessage? && message.type == 'utf8')
-          @onmessage.call(this, message.utf8Data)
+
+          compliantMessage =
+            data: message.utf8Data
+
+          @onmessage.call(this, compliantMessage)
         else console.log("onmessage was not defined so could not be called")
 
       self.connection = connection
